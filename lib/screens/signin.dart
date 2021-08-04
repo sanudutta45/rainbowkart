@@ -26,7 +26,7 @@ class Xyz extends StatelessWidget {
               width: 120,
               height: 120,
             ),
-            SizedBox(height: 35),
+            SizedBox(height: 80),
             AppSignIn()
           ],
         ),
@@ -137,7 +137,7 @@ class _AppSignInState extends State<AppSignIn> with InputValidationMixin {
             child: Padding(
                 padding: EdgeInsets.fromLTRB(10, 10, 30, 10),
                 child: Text(
-                  "Forgot Password?",
+                  "Forgot Password ?",
                   style: TextStyle(
                     color: Color(0xff36C69A),
                     decoration: TextDecoration.underline,
