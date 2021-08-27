@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class Otp extends StatelessWidget {
+  final String phoneNumber;
+
+  const Otp({Key? key, required this.phoneNumber}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +32,7 @@ class Otp extends StatelessWidget {
               // height: 120,
             ),
             SizedBox(height: 10),
-            OtpForm("+880210439")
+            OtpForm(phoneNumber: phoneNumber)
           ],
         ),
       ),
@@ -42,7 +45,7 @@ class OtpForm extends StatefulWidget {
 
   final String phoneNumber;
 
-  OtpForm(this.phoneNumber);
+  OtpForm({required this.phoneNumber});
 
   @override
   _OtpFormState createState() => _OtpFormState();

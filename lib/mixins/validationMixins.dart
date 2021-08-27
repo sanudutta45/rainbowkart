@@ -7,4 +7,6 @@ mixin InputValidationMixin {
 
   bool isConfirmPasswordMatch(String password, String comfirmPassword) =>
       password == comfirmPassword;
+
+  bool isPhoneNumberValid(String phoneNumber) => phoneNumber.length == 10;
 }

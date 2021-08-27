@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ranbowkart/mixins/validationMixins.dart';
 import 'package:ranbowkart/constants/constants.dart';
 
-class Xyz extends StatelessWidget {
+class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,8 +42,8 @@ class AppSignIn extends StatefulWidget {
 
 class _AppSignInState extends State<AppSignIn> with InputValidationMixin {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late String email;
-  late String password;
+  late String phoneNumber;
+  late String sponsorCode;
 
   @override
   Widget build(BuildContext context) {
@@ -54,12 +54,12 @@ class _AppSignInState extends State<AppSignIn> with InputValidationMixin {
             padding: EdgeInsets.all(10),
             child: TextFormField(
               keyboardType: TextInputType.phone,
-              onChanged: (value) => email = value,
+              onChanged: (value) => phoneNumber = value,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return EmailNotEntered;
-                } else if (isEmailValid(value)) {
-                  return EmailNotValid;
+                  return PhoneNumberNotEntered;
+                } else if (!isPhoneNumberValid(value)) {
+                  return PhoneNumberNotValid;
                 }
 
                 return null;
@@ -94,15 +94,9 @@ class _AppSignInState extends State<AppSignIn> with InputValidationMixin {
           Container(
             padding: EdgeInsets.all(10),
             child: TextFormField(
-              obscureText: true,
-              keyboardType: TextInputType.phone,
-              onChanged: (value) => email = value,
+              keyboardType: TextInputType.number,
+              onChanged: (value) => sponsorCode = value,
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return PasswordNotEntered;
-                } else if (isPasswordValid(value)) {
-                  return PasswordNotValid;
-                }
                 return null;
               },
               decoration: InputDecoration(
@@ -162,6 +156,8 @@ class _AppSignInState extends State<AppSignIn> with InputValidationMixin {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
+                    Navigator.pushNamed(context, "otp",
+                        arguments: phoneNumber);
                   }
                 },
               )),
