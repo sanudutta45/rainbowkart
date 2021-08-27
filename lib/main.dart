@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:ranbowkart/screens/routes.dart' as routes;
+// import 'package:ranbowkart/screens/otp.dart';
+// import 'package:ranbowkart/screens/signin.dart';
+//import 'package:ranbowkart/screens/register.dart';
 //import 'package:ranbowkart/screens/splash.dart';
-import 'package:ranbowkart/screens/signin.dart';
+//import 'package:ranbowkart/screens/signin.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,8 +19,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           fontFamily: 'Racing Sans One', backgroundColor: Colors.white),
-      // home: Splash(),
-      home: Xyz(),
+      onGenerateRoute: routes.generateRoute,
+      initialRoute: "login",
     );
   }
 }
