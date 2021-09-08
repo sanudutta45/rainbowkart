@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:ranbowkart/Repository/UserRepository.dart';
 import 'package:ranbowkart/mixins/validationMixins.dart';
 import 'package:ranbowkart/constants/constants.dart';
+// import 'package:ranbowkart/models/phoneVerification.dart';
 
 class SignIn extends StatelessWidget {
   @override
@@ -153,11 +156,23 @@ class _AppSignInState extends State<AppSignIn> with InputValidationMixin {
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    Navigator.pushNamed(context, "otp",
-                        arguments: phoneNumber);
+
+                    print('+91$phoneNumber');
+
+                    try {
+                          await Provider.of<UserRepository>(context,
+                                  listen: false)
+                              .verifyPhone(phoneNumber);
+                      Navigator.pushNamed(context, "otp");
+                    } catch (e) {
+                      print(e);
+                    }
+
+                    // print('${Provider.of<UserRepository>(context, listen: false).user}');
+                    Navigator.pushNamed(context, "otp", arguments: phoneNumber);
                   }
                 },
               )),

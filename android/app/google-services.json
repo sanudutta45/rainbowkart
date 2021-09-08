@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:84978461135:android:2f115d2726ad1d960c8aba",
+        "mobilesdk_app_id": "1:84978461135:android:11954a7f59e0189a0c8aba",
         "android_client_info": {
           "package_name": "com.ranbowkart.grocery"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "84978461135-6oe2oil8i7pt3tvhgabljnniel4uo1e0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ranbowkart.grocery",
+            "certificate_hash": "9cbff11b5495e8d95cd5c166c2e51e0cdbf370fa"
+          }
+        },
         {
           "client_id": "84978461135-qko0c2bah2p68pbt9t2h3p1m5hgdqbqr.apps.googleusercontent.com",
           "client_type": 3

@@ -2,11 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 // import 'package:ranbowkart/constants/colors.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:ranbowkart/Repository/UserRepository.dart';
+import 'package:provider/provider.dart';
 
 class Otp extends StatelessWidget {
-  final String phoneNumber;
-
-  const Otp({Key? key, required this.phoneNumber}) : super(key: key);
+  const Otp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +32,7 @@ class Otp extends StatelessWidget {
               // height: 120,
             ),
             SizedBox(height: 10),
-            OtpForm(phoneNumber: phoneNumber)
+            OtpForm()
           ],
         ),
       ),
@@ -42,10 +42,6 @@ class Otp extends StatelessWidget {
 
 class OtpForm extends StatefulWidget {
   // const OtpForm({Key? key}) : super(key: key);
-
-  final String phoneNumber;
-
-  OtpForm({required this.phoneNumber});
 
   @override
   _OtpFormState createState() => _OtpFormState();
@@ -71,7 +67,6 @@ class _OtpFormState extends State<OtpForm> {
   @override
   void dispose() {
     errorController!.close();
-
     super.dispose();
   }
 
@@ -87,7 +82,7 @@ class _OtpFormState extends State<OtpForm> {
               autoFocus: true,
               pastedTextStyle: TextStyle(
                   color: Colors.green.shade600, fontWeight: FontWeight.bold),
-              length: 4,
+              length: 6,
               obscureText: true,
               obscuringCharacter: "*",
               blinkWhenObscuring: true,
@@ -184,10 +179,12 @@ class _OtpFormState extends State<OtpForm> {
                 borderRadius: BorderRadius.all(Radius.circular(50)),
               ),
             ),
-            onPressed: () {
+            onPressed: () async {
               formKey.currentState!.validate();
 
-              if (currentText.length != 4 || currentText != "1234") {
+              if (currentText.length != 6 ||
+                  !await Provider.of<UserRepository>(context, listen: false)
+                      .signInWithOtp(currentText)) {
                 errorController!.add(ErrorAnimationType.shake);
                 setState(() => hasError = true);
               } else {
