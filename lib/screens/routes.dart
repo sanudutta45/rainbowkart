@@ -12,7 +12,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => SignIn());
     case 'otp':
       String phoneNumber = settings.arguments.toString();
-      return MaterialPageRoute(builder: (context) => Otp(phoneNumber: phoneNumber));
+      return MaterialPageRoute(
+          builder: (context) => Otp(phoneNumber: phoneNumber));
     default:
       return MaterialPageRoute(builder: (context) => NotFound());
   }

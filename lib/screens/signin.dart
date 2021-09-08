@@ -144,7 +144,7 @@ class _AppSignInState extends State<AppSignIn> with InputValidationMixin {
               height: 50,
               child: ElevatedButton(
                 child: Text(
-                  'Submit',
+                  'Continue',
                   style: TextStyle(fontSize: 25),
                 ),
                 style: ElevatedButton.styleFrom(
@@ -156,8 +156,7 @@ class _AppSignInState extends State<AppSignIn> with InputValidationMixin {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    Navigator.pushNamed(context, "otp",
-                        arguments: phoneNumber);
+                    Navigator.pushNamed(context, "otp", arguments: phoneNumber);
                   }
                 },
               )),
