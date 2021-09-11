@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:ranbowkart/Repository/UserRepository.dart';
 import 'package:provider/provider.dart';
-import 'package:ranbowkart/models/PhoneVerification.dart';
-// ignore: import_of_legacy_library_into_null_safe
+// import 'package:ranbowkart/models/PhoneVerification.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Otp extends StatelessWidget {
   final String phoneNumber;
@@ -57,26 +57,43 @@ class _OtpFormState extends State<OtpForm> {
   // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
 
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
   bool hasError = false;
   bool serverError = false;
   String currentText = "";
+  late String verificationId;
+  late int? resendToken;
   final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    sendSms();
     errorController = StreamController<ErrorAnimationType>();
+    verifyPhone();
   }
 
-  Future<void> sendSms() async {
+  Future<void> verifyPhone() async {
     try {
-      final PhoneVerification res =
-          await Provider.of<UserRepository>(context, listen: false)
-              .verifyPhone(widget.phoneNumber);
-
-      if (res.status && res.isVerified != null)
-        Navigator.pushReplacementNamed(context, "home");
+      await _auth.verifyPhoneNumber(
+          phoneNumber: "+91" + widget.phoneNumber,
+          timeout: const Duration(seconds: 60),
+          verificationCompleted: (PhoneAuthCredential credential) async {
+            print("inside verification function");
+            await _auth.signInWithCredential(credential);
+          },
+          verificationFailed: (FirebaseAuthException e) {
+            print("inside verification failed function");
+          },
+          codeSent: (String verificationId, int? resendToken) {
+            print("inside code sent function " +
+                verificationId +
+                " " +
+                '$resendToken');
+            this.verificationId = verificationId;
+            this.resendToken = resendToken;
+          },
+          codeAutoRetrievalTimeout: (String verificationId) {});
     } catch (e) {
       setState(() {
         serverError = true;
@@ -205,7 +222,7 @@ class _OtpFormState extends State<OtpForm> {
 
               if (currentText.length != 6 ||
                   !await Provider.of<UserRepository>(context, listen: false)
-                      .signInWithCredential(currentText)) {
+                      .signInWithCredential(currentText,verificationId)) {
                 errorController!.add(ErrorAnimationType.shake);
                 setState(() => hasError = true);
               } else {
