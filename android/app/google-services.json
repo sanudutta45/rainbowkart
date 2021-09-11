@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "84978461135-la9cl61i3cn1o2ahgofoaorua6rltdgp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ranbowkart.grocery",
+            "certificate_hash": "c35456cb5c8cefa9c7893f9d8471780d8e3ccf85"
+          }
+        },
+        {
           "client_id": "84978461135-qko0c2bah2p68pbt9t2h3p1m5hgdqbqr.apps.googleusercontent.com",
           "client_type": 3
         }

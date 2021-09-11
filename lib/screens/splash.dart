@@ -35,8 +35,9 @@ class _SplashState extends State<Splash> {
     return Scaffold(
         body: SafeArea(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Image.asset('assets/images/splash.png'),
+          Image.asset('assets/images/splash.png', height: 180),
           SizedBox(height: 35),
           Image.asset(
             'assets/images/rklogo.png',

@@ -11,8 +11,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case 'login':
       return MaterialPageRoute(builder: (context) => SignIn());
     case 'otp':
-      return MaterialPageRoute(
-          builder: (context) => Otp());
+      return MaterialPageRoute(builder: (context) => Otp());
     default:
       return MaterialPageRoute(builder: (context) => NotFound());
   }

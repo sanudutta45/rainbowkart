@@ -76,7 +76,7 @@ class _OtpFormState extends State<OtpForm> {
       Form(
           key: formKey,
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 60),
+            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 35),
             child: PinCodeTextField(
               appContext: context,
               autoFocus: true,

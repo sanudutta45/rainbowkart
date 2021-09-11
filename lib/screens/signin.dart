@@ -147,7 +147,7 @@ class _AppSignInState extends State<AppSignIn> with InputValidationMixin {
               height: 50,
               child: ElevatedButton(
                 child: Text(
-                  'Submit',
+                  'Continue',
                   style: TextStyle(fontSize: 25),
                 ),
                 style: ElevatedButton.styleFrom(
@@ -163,9 +163,8 @@ class _AppSignInState extends State<AppSignIn> with InputValidationMixin {
                     print('+91$phoneNumber');
 
                     try {
-                          await Provider.of<UserRepository>(context,
-                                  listen: false)
-                              .verifyPhone(phoneNumber);
+                      await Provider.of<UserRepository>(context, listen: false)
+                          .verifyPhone(phoneNumber);
                       Navigator.pushNamed(context, "otp");
                     } catch (e) {
                       print(e);
