@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:ranbowkart/Repository/UserRepository.dart';
 import 'package:provider/provider.dart';
+import 'package:ranbowkart/models/PhoneVerification.dart';
+// ignore: import_of_legacy_library_into_null_safe
 
 class Otp extends StatelessWidget {
-  const Otp({Key? key}) : super(key: key);
+  final String phoneNumber;
+  const Otp({Key? key, required this.phoneNumber}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +35,7 @@ class Otp extends StatelessWidget {
               // height: 120,
             ),
             SizedBox(height: 10),
-            OtpForm()
+            OtpForm(phoneNumber: phoneNumber)
           ],
         ),
       ),
@@ -41,7 +44,8 @@ class Otp extends StatelessWidget {
 }
 
 class OtpForm extends StatefulWidget {
-  // const OtpForm({Key? key}) : super(key: key);
+  final String phoneNumber;
+  const OtpForm({Key? key, required this.phoneNumber}) : super(key: key);
 
   @override
   _OtpFormState createState() => _OtpFormState();
@@ -54,14 +58,30 @@ class _OtpFormState extends State<OtpForm> {
   StreamController<ErrorAnimationType>? errorController;
 
   bool hasError = false;
+  bool serverError = false;
   String currentText = "";
-
   final formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
-    errorController = StreamController<ErrorAnimationType>();
     super.initState();
+    sendSms();
+    errorController = StreamController<ErrorAnimationType>();
+  }
+
+  Future<void> sendSms() async {
+    try {
+      final PhoneVerification res =
+          await Provider.of<UserRepository>(context, listen: false)
+              .verifyPhone(widget.phoneNumber);
+
+      if (res.status && res.isVerified != null)
+        Navigator.pushReplacementNamed(context, "home");
+    } catch (e) {
+      setState(() {
+        serverError = true;
+      });
+    }
   }
 
   @override
@@ -184,13 +204,11 @@ class _OtpFormState extends State<OtpForm> {
 
               if (currentText.length != 6 ||
                   !await Provider.of<UserRepository>(context, listen: false)
-                      .signInWithOtp(currentText)) {
+                      .signInWithCredential(currentText)) {
                 errorController!.add(ErrorAnimationType.shake);
                 setState(() => hasError = true);
               } else {
-                setState(() {
-                  hasError = false;
-                });
+                Navigator.pushReplacementNamed(context, "home");
               }
             },
           )),
