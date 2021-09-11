@@ -1,6 +1,6 @@
 class PhoneVerification {
-  final String status;
-  final String? message;
+  final bool status;
+  final bool? isVerified;
 
-  PhoneVerification({required this.status, this.message});
+  PhoneVerification({required this.status, this.isVerified});
 }
