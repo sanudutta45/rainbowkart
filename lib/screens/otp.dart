@@ -81,6 +81,7 @@ class _OtpFormState extends State<OtpForm> {
           verificationCompleted: (PhoneAuthCredential credential) async {
             print("inside verification function");
             await _auth.signInWithCredential(credential);
+            Navigator.pushReplacementNamed(context, "home");
           },
           verificationFailed: (FirebaseAuthException e) {
             print("inside verification failed function");
@@ -222,7 +223,7 @@ class _OtpFormState extends State<OtpForm> {
 
               if (currentText.length != 6 ||
                   !await Provider.of<UserRepository>(context, listen: false)
-                      .signInWithCredential(currentText,verificationId)) {
+                      .signInWithCredential(currentText, verificationId)) {
                 errorController!.add(ErrorAnimationType.shake);
                 setState(() => hasError = true);
               } else {
