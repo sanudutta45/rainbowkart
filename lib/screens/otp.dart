@@ -6,6 +6,7 @@ import 'package:ranbowkart/Repository/UserRepository.dart';
 import 'package:provider/provider.dart';
 // import 'package:ranbowkart/models/PhoneVerification.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class Otp extends StatelessWidget {
   final String phoneNumber;
@@ -51,7 +52,7 @@ class OtpForm extends StatefulWidget {
   _OtpFormState createState() => _OtpFormState();
 }
 
-class _OtpFormState extends State<OtpForm> {
+class _OtpFormState extends State<OtpForm> with CodeAutoFill {
   TextEditingController textEditingController = TextEditingController();
 
   // ignore: close_sinks
@@ -61,7 +62,7 @@ class _OtpFormState extends State<OtpForm> {
 
   bool hasError = false;
   bool serverError = false;
-  String currentText = "";
+  String otpCode = "";
   late String verificationId;
   late int? resendToken;
   final formKey = GlobalKey<FormState>();
@@ -69,6 +70,7 @@ class _OtpFormState extends State<OtpForm> {
   @override
   void initState() {
     super.initState();
+    listenForCode();
     errorController = StreamController<ErrorAnimationType>();
     verifyPhone();
   }
@@ -105,7 +107,17 @@ class _OtpFormState extends State<OtpForm> {
   @override
   void dispose() {
     errorController!.close();
+    cancel();
     super.dispose();
+  }
+
+  @override
+  void codeUpdated() {
+    print('$code!');
+    setState(() {
+      otpCode = code!;
+      textEditingController.text = code!;
+    });
   }
 
   @override
@@ -165,7 +177,7 @@ class _OtpFormState extends State<OtpForm> {
               onChanged: (value) {
                 print(value);
                 setState(() {
-                  currentText = value;
+                  otpCode = value;
                 });
               },
               beforeTextPaste: (text) {
@@ -221,9 +233,9 @@ class _OtpFormState extends State<OtpForm> {
             onPressed: () async {
               formKey.currentState!.validate();
 
-              if (currentText.length != 6 ||
+              if (otpCode.length != 6 ||
                   !await Provider.of<UserRepository>(context, listen: false)
-                      .signInWithCredential(currentText, verificationId)) {
+                      .signInWithCredential(otpCode, verificationId)) {
                 errorController!.add(ErrorAnimationType.shake);
                 setState(() => hasError = true);
               } else {
